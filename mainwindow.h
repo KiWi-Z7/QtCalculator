@@ -18,7 +18,8 @@ public:
     ~MainWindow();
 
 private slots:
-
+    void btnNumClicked();
+    void on_btnPeriod_clicked();
 
 private:
     Ui::MainWindow *ui;
