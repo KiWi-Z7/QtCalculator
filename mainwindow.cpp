@@ -9,6 +9,34 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->setStyleSheet(R"(
+    /* 数字/功能普通按钮 */
+    QPushButton{
+        background-color: #4285F4;
+        color: white;
+        font-family: "Microsoft YaHei";
+        font-size: 18px;
+        border-radius: 8px;
+        border: none;
+    }
+    QPushButton:hover{
+        background-color: #5C98F5;
+    }
+    QPushButton:pressed{
+        background-color: #2563EB;
+    }
+    /* 显示文本框 QLineEdit */
+    QLineEdit{
+        background-color: #F0F7FF;
+        color: #1E40AF;
+        font-family: "Microsoft YaHei";
+        font-size: 26px;
+        border: 2px solid #4285F4;
+        border-radius: 6px;
+        padding-right: 8px;
+    }
+    )");
+
     connect(ui->btnNum0,SIGNAL(clicked()),this,SLOT(btnNumClicked()));
     connect(ui->btnNum1,SIGNAL(clicked()),this,SLOT(btnNumClicked()));
     connect(ui->btnNum2,SIGNAL(clicked()),this,SLOT(btnNumClicked()));
