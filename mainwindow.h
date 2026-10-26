@@ -17,9 +17,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    QString operand;
+    QString opcode;
+    QStack<QString> operands;
+    QStack<QString> opcodes;
+    QString calculation(bool *ok = NULL);
+
 private slots:
     void btnNumClicked();
-    void on_btnPeriod_clicked();
+    void btnBinaryOperatorClicked();
+
+    void on_btnDel_clicked();
+    void on_btnClearAll_clicked();
+    void on_btnEqual_clicked();
 
 private:
     Ui::MainWindow *ui;

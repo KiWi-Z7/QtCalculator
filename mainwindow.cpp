@@ -18,11 +18,50 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnNum8,SIGNAL(clicked()),this,SLOT(btnNumClicked()));
     connect(ui->btnNum9,SIGNAL(clicked()),this,SLOT(btnNumClicked()));
 
+    connect(ui->btnPlus,SIGNAL(clicked()),this,SLOT(btnBinaryOperatorClicked()));
+    connect(ui->btnMinus,SIGNAL(clicked()),this,SLOT(btnBinaryOperatorClicked()));
+    connect(ui->btnMultiple,SIGNAL(clicked()),this,SLOT(btnBinaryOperatorClicked()));
+    connect(ui->btnDivide,SIGNAL(clicked()),this,SLOT(btnBinaryOperatorClicked()));
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+QString MainWindow::calculation(bool *ok)
+{
+    double result=0;
+    if (operands.size() == 2 && opcodes.size() > 0 ){
+        //取操作数
+        double operand1 = operands.front().toDouble();
+        operands.pop_front();
+        double operand2 = operands.front().toDouble();
+        operands.pop_front();
+
+        //取操作符
+        QString op = opcodes.front();
+        opcodes.pop_front();
+
+        if(op == "+"){
+            result = operand1 + operand2;
+        } else if (op == "-"){
+            result = operand1 - operand2;
+        }else if (op == "*"){
+            result = operand1 * operand2;
+        }else if (op == "/"){
+            result = operand1 / operand2;
+        }
+
+        ui->statusbar->showMessage(QString("calculation is in progress: operands is %1, opcode is %2").arg(
+                                       operands.size()).arg(
+                                       opcodes.size()));
+    } else
+        ui->statusbar->showMessage(QString("operands is %1, opcode is %2").arg(operands.size()).arg(
+                                       opcodes.size()));
+
+    return QString::number(result);
 }
 
 void MainWindow::btnNumClicked()
@@ -34,9 +73,41 @@ void MainWindow::btnNumClicked()
     ui->display->setText(operand);
 }
 
-void MainWindow::on_btnPeriod_clicked()
+void MainWindow::on_btnDel_clicked()
 {
-    if(!operand.contains("."))
-        operand += qobject_cast<QPushButton *>(sender())->text();
+    operand = operand.left(operand.length() - 1);
     ui->display->setText(operand);
+}
+
+
+void MainWindow::on_btnClearAll_clicked()
+{
+    operand.clear();
+    ui->display->setText(operand);
+}
+
+
+void MainWindow::btnBinaryOperatorClicked()
+{
+    QString opcode = qobject_cast<QPushButton *>(sender())->text();
+    if (operand != "")
+    {
+        operands.push_back(operand);
+        operand = "";
+
+        opcodes.push_back(opcode);
+    }
+    QString result = calculation();
+    ui->display->setText(result);
+}
+
+void MainWindow::on_btnEqual_clicked()
+{
+    if (operand != "")
+    {
+        operands.push_back(operand);
+        operand = "";
+    }
+    QString result = calculation();
+    ui->display->setText(result);
 }
